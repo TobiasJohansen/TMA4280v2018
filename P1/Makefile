@@ -1,14 +1,14 @@
 test:
 	g++ zeta0/test.cpp -o zeta0/test
 	g++ mach0/test.cpp -o mach0/test
-	zeta0/test 1 100
-	mach0/test 1 100
+	zeta0/test 100
+	mach0/test 100
 
 utest:
-	g++ zeta0/test.cpp -o zeta0/test
-	g++ mach0/test.cpp -o mach0/test
-	zeta0/test 2
-	mach0/test 2
+	g++ zeta0/utest.cpp -o zeta0/utest
+	g++ mach0/utest.cpp -o mach0/utest
+	zeta0/utest
+	mach0/utest
 
 clean:
 	rm zeta0/test
