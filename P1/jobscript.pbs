@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -N mpi
+#PBS -A itea_lille-tma4280
+#PBS -W group_list=itea_lille-tma4280
+#PBS -l walltime=00:01:00
+#PBS -l select=2:mpiprocs=8
+#PBS -o output.txt
+#PBS -e error.txt
+
+cd $PBS_O_WORKDIR
+module load gcc openmpi
+mpiCC zeta1/mpi.cpp -o zeta1/mpi
+mpiCC mach1/mpi.cpp -o mach1/mpi
+mpiexec	zeta1/mpi 10
+mpiexec	zeta1/mpi 1000
+mpiexec	zeta1/mpi 100000
+mpiexec	zeta1/mpi 10000000
+mpiexec zeta1/mpi 1000000000
+mpiexec mach1/mpi 10        
+mpiexec mach1/mpi 1000      
+mpiexec mach1/mpi 100000    
+mpiexec mach1/mpi 10000000  
+mpiexec	mach1/mpi 1000000000
+
