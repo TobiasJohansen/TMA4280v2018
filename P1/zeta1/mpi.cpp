@@ -9,7 +9,7 @@
 
 int main(int argc, char** argv) {
 
-  if(argc != 2) return 1;
+  if(argc < 2) return 1;
   int iterations = std::atoi(argv[1]);
   if(iterations == 0) return 1;
 
@@ -39,21 +39,25 @@ int main(int argc, char** argv) {
   double sum = 0;
   if(world_rank < rest){
     sum = Riemann::pi_approximation(world_rank*iperprocs+world_rank+1,world_rank*iperprocs+world_rank+iperprocs+2);
+    printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+world_rank+1, world_rank*iperprocs+world_rank+iperprocs+1, world_rank, sum);
     //std::cout << "[" << world_rank*iperprocs+world_rank*1+1 << "] - [" << world_rank*iperprocs+world_rank*1+iperprocs+1 << "]\n"
     //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
   }else{
     sum = Riemann::pi_approximation(world_rank*iperprocs+rest+1,world_rank*iperprocs+rest+1+iperprocs);
+    printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+rest+1, world_rank*iperprocs+rest+iperprocs, world_rank, sum);
     //std::cout << "[" << world_rank*iperprocs+rest+1 << "] - [" << world_rank*iperprocs+rest+iperprocs << "]\n"
     //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
   }
+  fflush(stdout);
   double global_sum = 0;
   MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Barrier(MPI_COMM_WORLD);
   if(world_rank == 0){
-    std::cout << "Parallel approximation of pi using the Riemann Zeta function after " << iterations << " iterations, with " << world_size
-    << " processes: " << std::setprecision(60) << sqrt(6*global_sum) << "\n";
+    sleep(0.01);
+    std::cout << "Parallel approximation of PI using the Riemann Zeta function after " << iterations << " iterations, with " << world_size
+    << " processes: " << std::setprecision(60) << global_sum << "\n";
     std::cout << "Difference between PI and PI approximated by Riemann Zeta function: " << std::setprecision(60) << fabs(M_PI-global_sum) << "\n";
-    std::cout << "Wall time: " << std::setprecision(3) << "\n" << (MPI_Wtime() - wTime)*1000 << " ms.\n" << std::endl;
+    std::cout << "Wall time: " << std::setprecision(3) << (MPI_Wtime() - wTime)*1000 << " ms.\n" << std::endl;
   }
   // Finalize the MPI environment.
   MPI_Finalize();

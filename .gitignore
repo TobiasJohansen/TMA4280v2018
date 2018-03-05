@@ -33,3 +33,6 @@
 
 # IDE
 *.idea
+
+# Text-files
+*.txt
