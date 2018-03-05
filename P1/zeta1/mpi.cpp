@@ -30,6 +30,10 @@ int main(int argc, char** argv) {
     }
     return 1;
   }
+  double wTime;
+  if(world_rank == 0){
+    wTime = MPI_Wtime();
+  }
   int iperprocs = iterations/world_size;
   int rest = iterations % world_size;
   double sum = 0;
@@ -46,7 +50,10 @@ int main(int argc, char** argv) {
   MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Barrier(MPI_COMM_WORLD);
   if(world_rank == 0){
-    std::cout << "Total sum is: " << std::setprecision(60) << "\n" << sqrt(6*global_sum) << std::endl;
+    std::cout << "Parallel approximation of pi using the Riemann Zeta function after " << iterations << " iterations, with " << world_size
+    << " processes: " << std::setprecision(60) << sqrt(6*global_sum) << "\n";
+    std::cout << "Difference between PI and PI approximated by Riemann Zeta function: " << std::setprecision(60) << fabs(M_PI-global_sum) << "\n";
+    std::cout << "Wall time: " << std::setprecision(3) << "\n" << (MPI_Wtime() - wTime)*1000 << " ms.\n" << std::endl;
   }
   // Finalize the MPI environment.
   MPI_Finalize();
