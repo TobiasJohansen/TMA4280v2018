@@ -10,16 +10,15 @@
 
 cd $PBS_O_WORKDIR
 module load gcc openmpi
-mpiCC zeta1/mpi.cpp -o zeta1/mpi
-mpiCC mach1/mpi.cpp -o mach1/mpi
-mpiexec	zeta1/mpi 10
-mpiexec	zeta1/mpi 1000
-mpiexec	zeta1/mpi 100000
-mpiexec	zeta1/mpi 10000000
-mpiexec zeta1/mpi 1000000000
-mpiexec mach1/mpi 10        
-mpiexec mach1/mpi 1000      
-mpiexec mach1/mpi 100000    
-mpiexec mach1/mpi 10000000  
-mpiexec	mach1/mpi 1000000000
-
+mpiCC zeta1/mpi.cpp -o zeta1/mpi.o
+mpiCC mach1/mpi.cpp -o mach1/mpi.o
+mpiexec	zeta1/mpi.o 10
+mpiexec	zeta1/mpi.o 1000
+mpiexec	zeta1/mpi.o 100000
+mpiexec	zeta1/mpi.o 10000000
+mpiexec zeta1/mpi.o 1000000000
+mpiexec mach1/mpi.o 10
+mpiexec mach1/mpi.o 1000
+mpiexec mach1/mpi.o 100000
+mpiexec mach1/mpi.o 10000000
+mpiexec	mach1/mpi.o 1000000000
