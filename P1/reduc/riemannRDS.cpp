@@ -40,26 +40,21 @@ int main(int argc, char** argv) {
     sum += Riemann::pi_approximation(i);
   }
   printf("Sum of process %d: %.17f\n", world_rank, sum);
-  //if(world_rank < rest){
-    //sum = Riemann::pi_approximation(world_rank*iperprocs+world_rank+1,world_rank*iperprocs+world_rank+iperprocs+2);
-    //printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+world_rank+1, world_rank*iperprocs+world_rank+iperprocs+1, world_rank, sum);
-    //std::cout << "[" << world_rank*iperprocs+world_rank*1+1 << "] - [" << world_rank*iperprocs+world_rank*1+iperprocs+1 << "]\n"
-    //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
-  //}else{
-    //sum = Riemann::pi_approximation(world_rank*iperprocs+rest+1,world_rank*iperprocs+rest+1+iperprocs);
-    //printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+rest+1, world_rank*iperprocs+rest+iperprocs, world_rank, sum);
-    //std::cout << "[" << world_rank*iperprocs+rest+1 << "] - [" << world_rank*iperprocs+rest+iperprocs << "]\n"
-    //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
-  //}
   fflush(stdout);
-  double global_sum = 0;
-  MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-  global_sum = sqrt(6*global_sum);
+  int stop = log2(world_size);
+  for(int d = 0; d < stop; d++){
+    int q = world_rank xor (int) pow(2, d);
+    MPI_Send(&sum, 1, MPI_DOUBLE, q, 0, MPI_COMM_WORLD);
+    double r = 0;
+    MPI_Recv(&r, 1, MPI_DOUBLE, q, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    sum += r;
+  }
   if(world_rank == 0){
+    sum = sqrt(6*sum);
     sleep(0.01);
     std::cout << "Parallel approximation of PI using the Riemann Zeta function after " << iterations << " iterations, with " << world_size
-    << " processes: " << std::setprecision(17) << global_sum << "\n";
-    std::cout << "Difference between PI and PI approximated by Riemann Zeta function: " << std::setprecision(17) << fabs(M_PI-global_sum) << "\n";
+    << " processes: " << std::setprecision(17) << sum << "\n";
+    std::cout << "Difference between PI and PI approximated by Riemann Zeta function: " << std::setprecision(17) << fabs(M_PI-sum) << "\n";
     std::cout << "Wall time: " << std::setprecision(3) << (MPI_Wtime() - wTime)*1000 << " ms.\n" << std::endl;
   }
   // Finalize the MPI environment.

@@ -7,8 +7,12 @@ all:
 	g++ mach0/utest.cpp -o mach0/utest.o
 	g++ zeta0/vtest.cpp -o zeta0/vtest.o
 	g++ mach0/vtest.cpp -o mach0/vtest.o
+	mpiCC reduc/machinRDS.cpp -o reduc/machinRDS.o
+	mpiCC reduc/machinAllreduce.cpp -o reduc/machinAllreduce.o
+	mpiCC reduc/riemannRDS.cpp -o reduc/riemannRDS.o
+	mpiCC reduc/riemannAllreduce.cpp -o reduc/riemannAllreduce.o
 
-test: 
+test:
 	zeta0/test.o 100
 	mach0/test.o 100
 	mpirun -n 2 zeta1/mpi.o 100

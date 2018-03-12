@@ -40,23 +40,9 @@ int main(int argc, char** argv) {
     sum += 4*(4*Machin::arctan_approximation(i, 1.0/5)-Machin::arctan_approximation(i, 1.0/239));
   }
   printf("Sum of process %d: %.17f\n", world_rank, sum);
-  //if(world_rank < rest){
-    // Sums blocks
-    //sum = Machin::pi_approximation(world_rank*iperprocs+world_rank+1,world_rank*iperprocs+world_rank+iperprocs+2);
-    // Sums each processes*i
-
-    //printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+world_rank+1, world_rank*iperprocs+world_rank+iperprocs+1, world_rank, sum);
-    //std::cout << "[" << world_rank*iperprocs+world_rank*1+1 << "] - [" << world_rank*iperprocs+world_rank*1+iperprocs+1 << "]\n"
-    //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
-  //}else{
-    //sum = Machin::pi_approximation(world_rank*iperprocs+rest+1,world_rank*iperprocs+rest+1+iperprocs);
-    //printf("[%d]-[%d] Sum of process %d: %.60f\n", world_rank*iperprocs+rest+1, world_rank*iperprocs+rest+iperprocs, world_rank, sum);
-    //std::cout << "[" << world_rank*iperprocs+rest+1 << "] - [" << world_rank*iperprocs+rest+iperprocs << "]\n"
-    //<< "Sum of process " << world_rank << " is: " << sum << std::endl;
-  //}
   fflush(stdout);
   double global_sum = 0;
-  MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Allreduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
   if(world_rank == 0){
     sleep(0.01);
     std::cout << "Parallel approximation of PI using the Machin formula after " << iterations << " iterations, with " << world_size
