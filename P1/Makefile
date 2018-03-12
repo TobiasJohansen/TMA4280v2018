@@ -7,10 +7,12 @@ all:
 	g++ mach0/utest.cpp -o mach0/utest.o
 	g++ zeta0/vtest.cpp -o zeta0/vtest.o
 	g++ mach0/vtest.cpp -o mach0/vtest.o
-	mpiCC reduc/machinRDS.cpp -o reduc/machinRDS.o
 	mpiCC reduc/machinAllreduce.cpp -o reduc/machinAllreduce.o
 	mpiCC reduc/riemannRDS.cpp -o reduc/riemannRDS.o
 	mpiCC reduc/riemannAllreduce.cpp -o reduc/riemannAllreduce.o
+	mpiCC reduc/machinRDS.cpp -o reduc/machinRDS.o
+	g++ -fopenmp zeta2/mpi.cpp -o zeta2/mpi.o
+	g++ -fopenmp mach2/mpi.cpp -o mach2/mpi.o
 
 test:
 	zeta0/test.o 100

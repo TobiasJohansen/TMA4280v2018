@@ -5,8 +5,8 @@
 int main(int argc, char** argv) {
   int threads = 4;
   double sum = 0.0;
-  int iterations = 1000;
-  #pragma omp parallel for num_threads(threads) reduction(+:sum)
+  int iterations = 10000000;
+  #pragma omp parallel for num_threads(threads) schedule(guided, 1) reduction(+:sum)
   for (size_t i = iterations; i > 0; i--) {
     sum += 4*(4*Machin::arctan_approximation(i, 1.0/5)-Machin::arctan_approximation(i, 1.0/239));
   }
