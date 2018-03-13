@@ -1,3 +1,5 @@
+OMP_NUM_THREADS=4
+
 all:
 	g++ zeta0/test.cpp -o zeta0/test.o
 	g++ mach0/test.cpp -o mach0/test.o
@@ -11,30 +13,18 @@ all:
 	mpiCC reduc/riemannRDS.cpp -o reduc/riemannRDS.o
 	mpiCC reduc/riemannAllreduce.cpp -o reduc/riemannAllreduce.o
 	mpiCC reduc/machinRDS.cpp -o reduc/machinRDS.o
-	g++ -fopenmp zeta2/mpi.cpp -o zeta2/mpi.o
-	g++ -fopenmp mach2/mpi.cpp -o mach2/mpi.o
+	mpiCC -fopenmp zeta2/mpi.cpp -o zeta2/mpi.o
+	mpiCC -fopenmp mach2/mpi.cpp -o mach2/mpi.o
 
 test:
-	zeta0/test.o 100
-	mach0/test.o 100
-	mpirun -n 2 zeta1/mpi.o 100
-	mpirun -n 8 zeta1/mpi.o 100
-	mpirun -n 16 zeta1/mpi.o 100
-	mpirun -n 2 zeta1/mpi.o 1000
-	mpirun -n 8 zeta1/mpi.o 1000
-	mpirun -n 16 zeta1/mpi.o 1000
-	mpirun -n 2 zeta1/mpi.o 10000
-	mpirun -n 8 zeta1/mpi.o 10000
-	mpirun -n 16 zeta1/mpi.o 10000
-	mpirun -n 2 mach1/mpi.o 100
-	mpirun -n 8 mach1/mpi.o 100
-	mpirun -n 16 mach1/mpi.o 100
-	mpirun -n 2 mach1/mpi.o 1000
-	mpirun -n 8 mach1/mpi.o 1000
-	mpirun -n 16 mach1/mpi.o 1000
-	mpirun -n 2 mach1/mpi.o 10000
-	mpirun -n 8 mach1/mpi.o 10000
-	mpirun -n 16 mach1/mpi.o 10000
+	zeta0/test.o 100000
+	mach0/test.o 100000
+	mpirun -n 2 zeta1/mpi.o 100000
+	mpirun -n 8 zeta1/mpi.o 100000
+	mpirun -n 2 mach1/mpi.o 100000
+	mpirun -n 8 mach1/mpi.o 100000
+	zeta2/mpi.o 100000
+	mach2/mpi.o 100000
 
 utest:
 	zeta0/utest.o
