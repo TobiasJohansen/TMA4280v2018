@@ -19,12 +19,42 @@ all:
 test:
 	zeta0/test.o 100000
 	mach0/test.o 100000
+	mpirun -n 2 zeta1/mpi.o 10
+	mpirun -n 4 zeta1/mpi.o 10
+	mpirun -n 8 zeta1/mpi.o 10
+	mpirun -n 2 zeta1/mpi.o 1000
+	mpirun -n 4 zeta1/mpi.o 1000
+	mpirun -n 8 zeta1/mpi.o 1000
 	mpirun -n 2 zeta1/mpi.o 100000
+	mpirun -n 4 zeta1/mpi.o 100000
 	mpirun -n 8 zeta1/mpi.o 100000
+	mpirun -n 2 mach1/mpi.o 10
+	mpirun -n 4 mach1/mpi.o 10
+	mpirun -n 8 mach1/mpi.o 10
+	mpirun -n 2 mach1/mpi.o 1000
+	mpirun -n 4 mach1/mpi.o 1000
+	mpirun -n 8 mach1/mpi.o 1000
 	mpirun -n 2 mach1/mpi.o 100000
+	mpirun -n 4 mach1/mpi.o 100000
 	mpirun -n 8 mach1/mpi.o 100000
-	zeta2/mpi.o 100000
-	mach2/mpi.o 100000
+	mpirun -n 2 zeta2/mpi.o 10
+	mpirun -n 4 zeta2/mpi.o 10
+	mpirun -n 8 zeta2/mpi.o 10
+	mpirun -n 2 zeta2/mpi.o 1000
+	mpirun -n 4 zeta2/mpi.o 1000
+	mpirun -n 8 zeta2/mpi.o 1000
+	mpirun -n 2 zeta2/mpi.o 100000
+	mpirun -n 4 zeta2/mpi.o 100000
+	mpirun -n 8 zeta2/mpi.o 100000
+	mpirun -n 2 mach2/mpi.o 10
+	mpirun -n 4 mach2/mpi.o 10
+	mpirun -n 8 mach2/mpi.o 10
+	mpirun -n 2 mach2/mpi.o 1000
+	mpirun -n 4 mach2/mpi.o 1000
+	mpirun -n 8 mach2/mpi.o 1000
+	mpirun -n 2 mach2/mpi.o 100000
+	mpirun -n 4 mach2/mpi.o 100000
+	mpirun -n 8 mach2/mpi.o 100000
 
 utest:
 	zeta0/utest.o

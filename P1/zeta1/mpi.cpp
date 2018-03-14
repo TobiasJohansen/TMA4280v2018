@@ -35,10 +35,11 @@ int main(int argc, char** argv) {
   MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   global_sum = sqrt(6*global_sum);
   if(world_rank == 0){
+    double wTime2 = MPI_Wtime();
     sleep(0.01);
     printf("Parallel approximation of PI using the Riemann Zeta function after %d iterations, with %d processes: %.17f\n", iterations, world_size, global_sum);
     printf("Difference between PI and PI approximated by Riemann Zeta function: %.17f\n", fabs(M_PI-global_sum));
-    printf("Wall time: %.3f ms.\n\n", (MPI_Wtime() - wTime)*1000);
+    printf("Wall time: %.3f ms.\n\n", (wTime2 - wTime)*1000);
   }
   MPI_Finalize();
   return 0;

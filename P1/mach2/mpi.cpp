@@ -34,11 +34,12 @@ int main(int argc, char** argv) {
   double global_sum = 0;
   MPI_Reduce(&sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   if(world_rank == 0){
+    double wTime2 = MPI_Wtime();
     sleep(0.01);
     printf("Parallel approximation of PI using the Machin formula after %d iterations, with %d processes with %d threads each: %.17f\n",
     iterations, world_size, omp_get_max_threads(), global_sum);
     printf("Difference between PI and PI approximated by Machin formula: %.17f\n", fabs(M_PI-global_sum));
-    printf("Wall time: %.3f ms.\n\n", (MPI_Wtime() - wTime)*1000);
+    printf("Wall time: %.3f ms.\n\n", (wTime2 - wTime)*1000);
   }
   MPI_Finalize();
   return 0;
